@@ -19,7 +19,7 @@ namespace Photon.Realtime.Demo
             this.lbc = new LoadBalancingClient();
             this.lbc.AddCallbackTarget(this);
             this.lbc.SerializationProtocol = SerializationProtocol.GpBinaryV16;
-            //this.lbc.LoadBalancingPeer.SocketImplementationConfig[ConnectionProtocol.Udp] = typeof(SocketUdpSrc);
+            ////this.lbc.LoadBalancingPeer.SocketImplementationConfig[ConnectionProtocol.Udp] = typeof(SocketUdpSrc);
 
             if (!this.lbc.ConnectUsingSettings(appSettings))
             {
@@ -107,6 +107,7 @@ namespace Photon.Realtime.Demo
 
         public void OnCreateRoomFailed(short returnCode, string message)
         {
+
         }
 
         public void OnJoinedRoom()

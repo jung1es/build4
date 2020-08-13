@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using UnityEditor;
+using com.PT.contest;
 
 public class DraggingObs : MonoBehaviourPunCallbacks
 {
@@ -17,6 +18,9 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     private Rigidbody myRigidbody;
     float mX, mY, mZ;
     Color myColor;
+    public enum AvilableColors { Red,Blue,Green,Yellow,Purple}
+    public AvilableColors MyObjectColor;
+
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -43,85 +47,119 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             GetComponent<Renderer>().material.SetColor("_BaseColor", myColor);
         }
     }
+    
+    private Vector3 screenPoint;
+    private Vector3 offset;
+    private GameObject PlayerArea;
+    public void SetPlayerArea(GameObject playerArea)
+    {
+        PlayerArea = playerArea;
+    }
+    private bool canMoveObject = true;
+    
     private void OnMouseDown()
     {
-        //  base.photonView.RequestOwnership();
-        gameObject.transform.parent = GameObject.FindGameObjectWithTag("Player").transform;
-        gameObject.GetComponent<Rigidbody>().useGravity = false;
-        gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        lerpAlha = true;
-
-
-        // Store offset = gameobject world pos - mouse world pos
-
-        Cursor.visible = false;
-        // Cursor.lockState = CursorLockMode.Locked;
-
-        x = transform.eulerAngles.x;
-        y = transform.eulerAngles.y;
-        z = transform.eulerAngles.z;
-    }
-    private void OnMouseDrag()
-    {
-        if (myCamera == null)
+        myCamera = Manager.Instance.MyCamRef;
+        if (PlayerArea != null)
         {
-            myCamera = FindObjectOfType<Camera>();
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            mouseRotationMode = !mouseRotationMode;
-        }
-        if (!mouseRotationMode)
-        {
-            Vector3 pas = transform.position -GetComponentInParent<Transform>().position;
-            pas.Normalize();
-            mX = Input.GetAxis("Mouse X")/4;
-            mY = Input.GetAxis("Mouse Y")/4;
-            
-            if (Input.GetKey(KeyCode.Q))
+            if(PlayerArea == Manager.Instance.MyTransformRef.GetComponent<PlayerController>().GetMyArea())
             {
-                myRigidbody.MovePosition(transform.position + myCamera.transform.forward * Time.fixedDeltaTime*ObjectMovingSpeed);
-            }
-            else if (Input.GetKey(KeyCode.E))
-            {
-                myRigidbody.MovePosition(transform.position - myCamera.transform.forward*Time.fixedDeltaTime*ObjectMovingSpeed);
+                canMoveObject = true;
             }
             else
             {
-                myRigidbody.MovePosition(transform.position + new Vector3(mX, mY));
+                canMoveObject = false;
             }
-
-            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            //transform.Rotate((Input.GetAxis("Mouse X") * 100 * Time.deltaTime), (Input.GetAxis("Mouse Y") * 100 * Time.deltaTime), 0, Space.Self);
-            float rotX = Input.GetAxis("Mouse X") * 100 * Mathf.Deg2Rad;
-            float rotY = Input.GetAxis("Mouse Y") * 100 * Mathf.Deg2Rad;
-            transform.Rotate(Vector3.up, -rotX);
-            transform.Rotate(Vector3.right, rotY);
+            canMoveObject = true;
+        }
+        Debug.Log(myCamera.transform.position);
+        if (canMoveObject)
+        {
+            base.photonView.RequestOwnership();
+            gameObject.transform.parent = Manager.Instance.MyTransformRef;
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            lerpAlha = true;
+            Cursor.visible = false;
+            x = transform.eulerAngles.x;
+            y = transform.eulerAngles.y;
+            z = transform.eulerAngles.z;
+        }
+    }
+    Vector3 pas;
+    private void OnMouseDrag()
+    {
+        if (canMoveObject)
+        {
+           
+            if (Input.GetMouseButtonUp(1))
+            {
+                mouseRotationMode = !mouseRotationMode;
+                screenPoint = myCamera.WorldToScreenPoint(gameObject.transform.position);
+                offset = gameObject.transform.position - myCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+            }
+
+            if (!mouseRotationMode)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                pas = transform.position - Manager.Instance.MyTransformRef.position;
+                pas.Normalize();
+                mX = Input.GetAxis("Mouse X") / 2;
+                mY = Input.GetAxis("Mouse Y") / 2;
+                if (Input.mouseScrollDelta.y != 0)
+                {
+                    transform.position += new Vector3(pas.x, 0, pas.z) * Input.mouseScrollDelta.y;
+                }
+                else
+                {
+                    transform.localPosition += new Vector3(mX, mY);
+                }
+                gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                //transform.Rotate((Input.GetAxis("Mouse X") * 100 * Time.deltaTime), (Input.GetAxis("Mouse Y") * 100 * Time.deltaTime), 0, Space.Self);
+                float rotX = Input.GetAxis("Mouse X") * 100 * Mathf.Deg2Rad;
+                float rotY = Input.GetAxis("Mouse Y") * 100 * Mathf.Deg2Rad;
+                transform.Rotate(transform.up, -rotX);
+                transform.Rotate(transform.right, rotY);
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                transform.position -= new Vector3(pas.x, 0, pas.z) * 0.1f;
+            }
+            else if (Input.GetKey(KeyCode.E))
+            {
+                transform.position += new Vector3(pas.x, 0, pas.z) * 0.1f;
+            }
         }
     }
     private bool mouseRotationMode = false;
     private void OnMouseUp()
     {
-        lerpAlha = false;
-        Cursor.lockState = CursorLockMode.None;
-        mouseRotationMode = false;
-        gameObject.transform.parent = null;
-        gameObject.GetComponent<Rigidbody>().useGravity = true;
-        Cursor.visible = true;
+        if (canMoveObject)
+        {
+            lerpAlha = false;
+            Cursor.lockState = CursorLockMode.None;
+            mouseRotationMode = false;
+            gameObject.transform.parent = null;
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+            Cursor.visible = true;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-
         if (collision.transform.CompareTag("Floor"))
         {
             min = transform.position.y;
         }
         else min = -50;
     }
+
 
 }

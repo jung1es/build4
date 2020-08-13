@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3320210013302267214}
   - component: {fileID: 6712231026831822952}
   - component: {fileID: 2030215355272968536}
+  - component: {fileID: 1500287310}
+  - component: {fileID: 2102830215487160831}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -139,6 +141,31 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &1500287310
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428005414676510555}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2102830215487160831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428005414676510555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411081bb4338e474a804133201628418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4109120571813989444
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +255,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4449266161684513745}
   - component: {fileID: 4165458679546538184}
-  - component: {fileID: 1753230431538731972}
   - component: {fileID: 7652211019687577379}
   - component: {fileID: 8299904251979494490}
   m_Layer: 0
@@ -283,7 +309,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -295,14 +321,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1753230431538731972
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8023531842203257905}
-  m_Enabled: 1
 --- !u!114 &7652211019687577379
 MonoBehaviour:
   m_ObjectHideFlags: 0

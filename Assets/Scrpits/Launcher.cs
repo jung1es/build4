@@ -11,16 +11,21 @@ namespace com.PT.contest
         public GameObject menu, lvlSelction;
         bool on;
 
-        public void Awake()
+        //public void Awake()
+        //{
+        //    if (Screen.fullScreen) Screen.fullScreen = false;
+        //    PhotonNetwork.AutomaticallySyncScene = true;
+        //    Connect();
+        //}
+        private void Start()
         {
-            if (Screen.fullScreen) Screen.fullScreen = false;
-            PhotonNetwork.AutomaticallySyncScene = true;
-            Connect();
+            PhotonNetwork.ConnectUsingSettings();
         }
 
         public override void OnConnectedToMaster()
         {
-            base.OnConnectedToMaster();
+            if (Screen.fullScreen) Screen.fullScreen = false;
+            PhotonNetwork.AutomaticallySyncScene = true;
             Join();
         }
 
@@ -28,19 +33,28 @@ namespace com.PT.contest
         {
             base.OnJoinedRoom();
         }
-
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            base.OnCreateRoomFailed(returnCode, message);
+            Debug.Log("FAILED TO CREATE ROOM");
+        }
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
-            base.OnJoinRandomFailed(returnCode, message);
+            Debug.Log("Failed to join room");
             Create();
         }
 
         public void Create()
         {
-            PhotonNetwork.CreateRoom("", new RoomOptions { MaxPlayers = 3 });
-            Join();
+            RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = (byte)3 };
+            PhotonNetwork.CreateRoom("Room0", roomOps);
         }
 
+        public override void OnCreatedRoom()
+        {
+            base.OnCreatedRoom();
+            Join();
+        }
         public void Connect()
         {
             PhotonNetwork.GameVersion = "0.0.0";
@@ -51,7 +65,7 @@ namespace com.PT.contest
         {
             PhotonNetwork.JoinRandomRoom();
         }
-
+         
         public void Switch()
         {
             menu.SetActive(on);
@@ -61,7 +75,7 @@ namespace com.PT.contest
 
         public void StartGame_POC_1()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel(1);
             }

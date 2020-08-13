@@ -3,7 +3,7 @@ using Photon.Pun;
 using TMPro;
 using com.PT.contest;
 
-public class Spectator : MonoBehaviourPunCallbacks
+public class Spectator : MonoBehaviourPun
 {
 
     public float speed, minY, maxY;
@@ -25,7 +25,8 @@ public class Spectator : MonoBehaviourPunCallbacks
         if (GameObject.FindGameObjectWithTag("trapz"))
             selection = null;
     }
-
+    
+   
     // Update is called once per frame
     void Update()
     {
