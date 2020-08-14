@@ -20,7 +20,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     Color myColor;
     public enum AvilableColors { Red,Blue,Green,Yellow,Purple}
     public AvilableColors MyObjectColor;
-
+    PhotonView photonView;
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -29,6 +29,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        photonView = GetComponent<PhotonView>();
         myColor = GetComponent<Renderer>().material.color;
         ObjectMovingSpeed = 5;
     }
@@ -81,6 +82,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             base.photonView.RequestOwnership();
             gameObject.transform.parent = Manager.Instance.MyTransformRef;
             gameObject.GetComponent<Rigidbody>().useGravity = false;
+            photonView.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, false);
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             lerpAlha = true;
             Cursor.visible = false;
@@ -148,10 +150,16 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             mouseRotationMode = false;
             gameObject.transform.parent = null;
             gameObject.GetComponent<Rigidbody>().useGravity = true;
+            photonView.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, true);
             Cursor.visible = true;
         }
     }
 
+    [PunRPC]
+    void SetRigidBodyGravity(bool state)
+    {
+        myRigidbody.useGravity = state;
+    }
     void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Floor"))

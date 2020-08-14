@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/HUb.unity
     guid: ffa0da10e604eee4e9b34f556e37a205
   - enabled: 1
+    path: Assets/Scenes/POC_1E2.unity
+    guid: 9129ecf3771413f4298faae8a6600777
+  - enabled: 1
+    path: Assets/Scenes/POC_2E2.unity
+    guid: da3e7dad776c0fa47bd02fcde90d8c09
+  - enabled: 0
+    path: Assets/Scenes/POC_3E2.unity
+    guid: 9131520f77b836040b8f3edb61ce29ea
+  - enabled: 0
     path: Assets/Scenes/POC_1.unity
     guid: 9d1ed8d1bada76243bf6a6d5b260e691
   - enabled: 0
