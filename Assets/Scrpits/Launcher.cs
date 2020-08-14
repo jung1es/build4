@@ -11,21 +11,16 @@ namespace com.PT.contest
         public GameObject menu, lvlSelction;
         bool on;
 
-        //public void Awake()
-        //{
-        //    if (Screen.fullScreen) Screen.fullScreen = false;
-        //    PhotonNetwork.AutomaticallySyncScene = true;
-        //    Connect();
-        //}
+      
         private void Start()
         {
+            PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings();
         }
 
         public override void OnConnectedToMaster()
         {
             if (Screen.fullScreen) Screen.fullScreen = false;
-            PhotonNetwork.AutomaticallySyncScene = true;
             Join();
         }
 

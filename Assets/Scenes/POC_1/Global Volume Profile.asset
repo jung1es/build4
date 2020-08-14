@@ -16,7 +16,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
 --- !u!114 &-3212225659583759371
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -100,8 +100,8 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0.432
           value: 0.48117155
-          inSlope: 2.3849375
-          outSlope: 2.3849375
+          inSlope: 1.4551427
+          outSlope: 1.4551427
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -324,10 +324,10 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.49893084}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.41873512}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 1.09227294e-10}
+    m_Value: {x: 1, y: 1, z: 1, w: 0.046317734}
   highlights:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -362,7 +362,7 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   postExposure:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.15
   contrast:
     m_OverrideState: 0

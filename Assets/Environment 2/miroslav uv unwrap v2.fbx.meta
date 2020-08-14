@@ -3,7 +3,162 @@ guid: 1b0df52fac7f85f4fa2f47ab40cfb86c
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BackColor
+    second: {fileID: 2100000, guid: a5337cf86a4f2864c9e96414f5d84ba4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_A04
+    second: {fileID: 2100000, guid: 44dff18e006e9c641b672b25f8fe21da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_M08
+    second: {fileID: 2100000, guid: 5bdd496dc06c3f04cab7be13e9379cf6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial2
+    second: {fileID: 2100000, guid: e0decc279a75a01479638f6ca6da0030, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Emissive_1
+    second: {fileID: 2100000, guid: da19e008fcccb624f8ecafd276ddd6cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrontColor
+    second: {fileID: 2100000, guid: b3c89e2bf02978343a89e067e630e2e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass_05
+    second: {fileID: 2100000, guid: a1a127168041d48449292204f1f2bf9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_0038_Orange
+    second: {fileID: 2100000, guid: 5aa7cbba125d24c4b8809adfa1bdf3e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_0046_Gold
+    second: {fileID: 2100000, guid: 32bc7d47382201446ab719b79f95453b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_0052_FloralWhite
+    second: {fileID: 2100000, guid: f603a985e85b8b841ae05b60685c08c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_0069_LimeGreen
+    second: {fileID: 2100000, guid: 041ebaa59c646cd4f8ba1b32ccde574f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_0098_DodgerBlue
+    second: {fileID: 2100000, guid: cbca34d8c047a8f439535f6b4d9dd0b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 28420a6c243551b45b08642c763f3126, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: aef1d9de29743a6428377d8af05b71b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__tallixartfoundry_hadid_bench_mtl_1
+    second: {fileID: 2100000, guid: 3b194af503c32cb4d91f0aed490dbc83, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__tallixartfoundry_hadid_bench_mtl_1.001
+    second: {fileID: 2100000, guid: 6548760e81a9ad248b228383dd647b3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__tallixartfoundry_hadid_bench_mtl_1.002
+    second: {fileID: 2100000, guid: 278ab569b4c98d54984d23656403f096, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: a29d89dd90b23e6499045a11f4fb0f4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Translucent_Glass_Gray
+    second: {fileID: 2100000, guid: 81763f5d19d82974ca869462e48defd3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _1
+    second: {fileID: 2100000, guid: 69a80cd95f4ab564bb6f02406830bc41, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _2
+    second: {fileID: 2100000, guid: e94c72c7c5dcf11408963cee00e6e95d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _31
+    second: {fileID: 2100000, guid: 641572d51cd261f41b6380c32f1db5aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _32
+    second: {fileID: 2100000, guid: 85aca0398b5180f49a33ed318d38ff4c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _6
+    second: {fileID: 2100000, guid: 51d756539f0b3b94f9508b15867f525e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _8
+    second: {fileID: 2100000, guid: ba02658f71ab0c94785c04bc121a60b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _Charcoal_.001
+    second: {fileID: 2100000, guid: 54c2924b4f9fc254385ef78412fe03ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: birch1
+    second: {fileID: 2100000, guid: ff06e1b1fc31b3f46a24f2d4ad2801ba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: birk1_bn
+    second: {fileID: 2100000, guid: 92d3fc314fca7494292c704504546368, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bk1_spulp
+    second: {fileID: 2100000, guid: 1070a2979dce51845a240a86662a0ee2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cushen part of chair
+    second: {fileID: 2100000, guid: bb8e979545965fd4eb1290b310008f7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grey_cloth1
+    second: {fileID: 2100000, guid: 88de9c647cc2f604983045564b18cffa, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
