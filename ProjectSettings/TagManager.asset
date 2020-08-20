@@ -9,6 +9,7 @@ TagManager:
   - centre
   - trapz
   - Manager
+  - StackingArea
   layers:
   - Default
   - TransparentFX

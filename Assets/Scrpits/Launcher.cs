@@ -21,6 +21,7 @@ namespace com.PT.contest
         public override void OnConnectedToMaster()
         {
             if (Screen.fullScreen) Screen.fullScreen = false;
+            menu.GetComponent<CanvasGroup>().interactable = true;
             Join();
         }
 

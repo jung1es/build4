@@ -5,21 +5,15 @@ using com.PT.contest;
 
 public class DraggingObs : MonoBehaviourPunCallbacks
 {
-    private float mZCoord;
-    Vector3 Fb, lastMouseCoordinate;
-    Vector3 mousePoint;
-
-    float x, y, z, q;
-    float prex, prez;
+    float x, y, z;
     public float ObjectMovingSpeed = 0;
     public float rotSen = 100;
     public float min;
     private Camera myCamera;
     private Rigidbody myRigidbody;
-    float mX, mY, mZ;
+    float mX, mY;
     Color myColor;
-    public enum AvilableColors { Red,Blue,Green,Yellow,Purple}
-    public AvilableColors MyObjectColor;
+    
     PhotonView photonView;
     private void Awake()
     {

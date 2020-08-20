@@ -775,6 +775,7 @@ GameObject:
   - component: {fileID: 1051384858}
   - component: {fileID: 1051384860}
   - component: {fileID: 1051384859}
+  - component: {fileID: 1051384861}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -840,6 +841,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051384857}
   m_CullTransparentMesh: 0
+--- !u!225 &1051384861
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051384857}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1240765675
 GameObject:
   m_ObjectHideFlags: 0
