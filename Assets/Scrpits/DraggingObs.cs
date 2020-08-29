@@ -19,7 +19,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     {
         myRigidbody = GetComponent<Rigidbody>();
         myRigidbody.drag = 1;
-        myRigidbody.angularDrag = 1;
+        myRigidbody.angularDrag = 15;
     }
     private void Start()
     {

@@ -71,58 +71,46 @@ namespace com.PT.contest
 
         public void StartGame_POC_1()
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.LoadLevel(1);
-            }
+        PhotonNetwork.LoadLevel(1);
         }
 
         public void StartGame_POC_2()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
                 PhotonNetwork.LoadLevel(2);
-            }
         }
 
         public void StartGame_POC_3()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
+            
                 PhotonNetwork.LoadLevel(3);
-            }
+           
         }
 
         public void StartGame_POC_4()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
+           
                 PhotonNetwork.LoadLevel(4);
-            }
+          
         }
 
         public void StartGame_POC_5()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
+           
                 PhotonNetwork.LoadLevel(5);
-            }
+            
         }
 
         public void StartGame_POC_6()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
                 PhotonNetwork.LoadLevel(6);
-            }
+            
         }
 
         public void StartGame_POC_7()
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
+            
                 PhotonNetwork.LoadLevel(7);
-            }
+            
         }
     }
 

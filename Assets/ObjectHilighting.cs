@@ -16,26 +16,22 @@ public class ObjectHilighting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = myCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.transform.CompareTag("Staks"))
-            {
-                if (hit.transform.gameObject != lastLooking)
-                {
-                    if (lastLooking != null)
-                    {
-                        lastLooking.GetComponent<Outline>().enabled = false;
-                    }
-                    lastLooking = hit.transform.gameObject;
-                    lastLooking.GetComponent<Outline>().enabled = true;
-                }
-            }
-            else
-            {
-               // lastLooking.GetComponent<Outline>().enabled = false;
-            }
-        }
+        //Ray ray = myCamera.ScreenPointToRay(Input.mousePosition);
+        //if (Physics.Raycast(ray, out hit))
+        //{
+        //    if (hit.transform.CompareTag("Staks"))
+        //    {
+        //        if (hit.transform.gameObject != lastLooking)
+        //        {
+        //            if (lastLooking != null)
+        //            {
+        //                lastLooking.GetComponent<Outline>().enabled = false;
+        //            }
+        //            lastLooking = hit.transform.gameObject;
+        //            lastLooking.GetComponent<Outline>().enabled = true;
+        //        }
+        //    }
+        //}
     }
 
 }

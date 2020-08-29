@@ -7,6 +7,8 @@ public class ShapeProperties : MonoBehaviour
 {
     public enum AvilableColors { Blue, Red, Green, Yellow}
     public AvilableColors myColor;
+    public enum AvilableShapes { Cylinder,Circle,Prism,Cube}
+    public AvilableShapes myShape;
 
     private void OnTriggerEnter(Collider other)
     {

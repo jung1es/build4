@@ -24,6 +24,8 @@ public class Spectator : MonoBehaviourPun
 
         if (GameObject.FindGameObjectWithTag("trapz"))
             selection = null;
+        rotX = transform.rotation.x;
+        rotY = transform.rotation.y;
     }
     
    
@@ -64,16 +66,33 @@ public class Spectator : MonoBehaviourPun
         }
         else
         {
-            speed = 1;
-            rotX += Input.GetAxis("Horizontal") * speed;
-            rotY -= Input.GetAxis("Vertical") * speed;
-            //rotY = Mathf.Clamp(rotY, minY, maxY);
-            transform.rotation = Quaternion.Euler(rotY, rotX, 0);
+            speed = 20;
+            if (!Manager.Instance.EnableMovementOnly)
+            {
+                if (Input.GetKey(KeyCode.A))
+                    transform.Rotate(-Vector3.up * speed * Time.deltaTime);
+
+                if (Input.GetKey(KeyCode.D))
+                    transform.Rotate(Vector3.up * speed * Time.deltaTime);
+
+                if (Input.GetKey(KeyCode.W))
+                    transform.Rotate(Vector3.left * speed * Time.deltaTime);
+                if (Input.GetKey(KeyCode.S))
+                    transform.Rotate(-Vector3.left * speed * Time.deltaTime);
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.A))
+                    transform.Translate(Vector3.left * speed /2* Time.deltaTime);
+
+                if (Input.GetKey(KeyCode.D))
+                    transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
+            }
         }
 
 
     }
-
+    
     [PunRPC]
     public void nextObj()
     {

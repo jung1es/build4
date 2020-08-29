@@ -26,6 +26,7 @@ namespace com.PT.contest
         public string playerPrefab;
         public Transform[] spawnPoint;
         public GameObject pauseMenu;
+        public bool EnableMovementOnly = false;
         private void Start()
         {
             StartCoroutine(DoCamCheck());
@@ -42,6 +43,7 @@ namespace com.PT.contest
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
+           
         }
         public Camera MyCamRef;
         public Transform MyTransformRef;
@@ -62,12 +64,20 @@ namespace com.PT.contest
                 }
             }
         }
+        private IEnumerator SetRotDelay()
+        {
+            yield return new WaitForSecondsRealtime(0.2f);
+            obj.transform.rotation = spawnPoint[0].rotation;
+
+        }
+        GameObject obj;
         public void Spawn()
         {
             
             if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
             {
-                GameObject obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[0].position, spawnPoint[0].rotation);
+                obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[0].position, spawnPoint[0].rotation);
+                
                 if (MyCamRef == null)
                 {
                     Debug.Log("CAM 1");
