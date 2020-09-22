@@ -84,22 +84,33 @@ public class Spectator : MonoBehaviourPun
             }
             else
             {
-                if (Input.GetKey(KeyCode.A))
-                    transform.Translate(Vector3.left * speed /2* Time.deltaTime);
+                //if (Input.GetKey(KeyCode.A))
+                //    transform.Translate(Vector3.left * speed /2* Time.deltaTime);
 
-                if (Input.GetKey(KeyCode.D))
-                    transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
+                //if (Input.GetKey(KeyCode.D))
+                //    transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
 
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(KeyCode.E))
                 {
                     transform.Rotate(Vector3.up, 40 * Time.deltaTime, Space.World);
-                   // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
+                    // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
                 }
 
-                if (Input.GetKey(KeyCode.S))
+                if (Input.GetKey(KeyCode.Q))
                 {
                     transform.Rotate(Vector3.up, -40 * Time.deltaTime, Space.World);
-                   //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
+                    //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
+                }
+                if (Input.GetKey(KeyCode.C))
+                {
+                    transform.Rotate(Vector3.forward, 40 * Time.deltaTime, Space.World);
+                    // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
+                }
+
+                if (Input.GetKey(KeyCode.Z))
+                {
+                    transform.Rotate(Vector3.forward, -40 * Time.deltaTime, Space.World);
+                    //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
                 }
             }
         }
