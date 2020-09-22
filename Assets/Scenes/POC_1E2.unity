@@ -750,6 +750,8 @@ MonoBehaviour:
   - {fileID: 1576703108}
   - {fileID: 395646744}
   pauseMenu: {fileID: 1864434028}
+  EnableMovementOnly: 0
+  LockObjects: 0
   MyCamRef: {fileID: 0}
   MyTransformRef: {fileID: 0}
 --- !u!4 &471352753
@@ -1351,7 +1353,7 @@ PrefabInstance:
     - target: {fileID: 9212464577149630500, guid: e247dcc3443385641aa3d902fcaf9420,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5038998
+      value: 2.26
       objectReference: {fileID: 0}
     - target: {fileID: 9212464577149630500, guid: e247dcc3443385641aa3d902fcaf9420,
         type: 3}
@@ -2102,7 +2104,7 @@ PrefabInstance:
     - target: {fileID: 4569548992342020653, guid: 2568d7720b627af41a9c4a8d42d326a3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.947
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4569548992342020653, guid: 2568d7720b627af41a9c4a8d42d326a3,
         type: 3}

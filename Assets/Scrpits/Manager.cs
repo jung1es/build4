@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using System.Collections;
+using TMPro;
 
 namespace com.PT.contest
 {
@@ -10,7 +11,7 @@ namespace com.PT.contest
         public static Manager Instance;
         PhotonView myPhotonView;
         Camera cam;
-        bool doCheck = false;
+        
         private void Awake()
         {
             if (Instance == null)
@@ -27,6 +28,7 @@ namespace com.PT.contest
         public Transform[] spawnPoint;
         public GameObject pauseMenu;
         public bool EnableMovementOnly = false;
+        public bool LockObjects = false;
         private void Start()
         {
             StartCoroutine(DoCamCheck());

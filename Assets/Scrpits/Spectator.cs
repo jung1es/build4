@@ -2,6 +2,8 @@
 using Photon.Pun;
 using TMPro;
 using com.PT.contest;
+using System.Timers;
+using Photon.Pun.Demo.Procedural;
 
 public class Spectator : MonoBehaviourPun
 {
@@ -70,10 +72,10 @@ public class Spectator : MonoBehaviourPun
             if (!Manager.Instance.EnableMovementOnly)
             {
                 if (Input.GetKey(KeyCode.A))
-                    transform.Rotate(-Vector3.up * speed * Time.deltaTime);
+                    transform.Rotate(-Vector3.up * speed * Time.deltaTime,Space.World);
 
                 if (Input.GetKey(KeyCode.D))
-                    transform.Rotate(Vector3.up * speed * Time.deltaTime);
+                    transform.Rotate(Vector3.up * speed * Time.deltaTime, Space.World);
 
                 if (Input.GetKey(KeyCode.W))
                     transform.Rotate(Vector3.left * speed * Time.deltaTime);
@@ -87,6 +89,18 @@ public class Spectator : MonoBehaviourPun
 
                 if (Input.GetKey(KeyCode.D))
                     transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
+
+                if (Input.GetKey(KeyCode.W))
+                {
+                    transform.Rotate(Vector3.up, 40 * Time.deltaTime, Space.World);
+                   // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
+                }
+
+                if (Input.GetKey(KeyCode.S))
+                {
+                    transform.Rotate(Vector3.up, -40 * Time.deltaTime, Space.World);
+                   //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
+                }
             }
         }
 
