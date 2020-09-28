@@ -90,26 +90,26 @@ public class Spectator : MonoBehaviourPun
                 //if (Input.GetKey(KeyCode.D))
                 //    transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
 
-                if (Input.GetKey(KeyCode.E))
+                if (Input.GetKey(KeyCode.E)&&!Input.GetMouseButton(0))
                 {
                     transform.Rotate(Vector3.up, 40 * Time.deltaTime, Space.World);
                     // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
                 }
 
-                if (Input.GetKey(KeyCode.Q))
+                if (Input.GetKey(KeyCode.Q) && !Input.GetMouseButton(0))
                 {
                     transform.Rotate(Vector3.up, -40 * Time.deltaTime, Space.World);
                     //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
                 }
                 if (Input.GetKey(KeyCode.C))
                 {
-                    transform.Rotate(Vector3.forward, 40 * Time.deltaTime, Space.World);
+                    transform.Rotate(Vector3.left, 40 * Time.deltaTime, Space.Self);
                     // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
                 }
 
                 if (Input.GetKey(KeyCode.Z))
                 {
-                    transform.Rotate(Vector3.forward, -40 * Time.deltaTime, Space.World);
+                    transform.Rotate(Vector3.left, -40 * Time.deltaTime, Space.Self);
                     //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
                 }
             }

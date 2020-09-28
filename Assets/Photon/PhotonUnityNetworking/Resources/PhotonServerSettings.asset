@@ -41,6 +41,10 @@ MonoBehaviour:
   - objsd
   - RespawnSpaceship
   - SetRigidBodyGravity
+  - SetLockedObjectsList
+  - AddObjectToList
+  - RemoveObjetFromList
+  - RemoveObjectsFromList
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

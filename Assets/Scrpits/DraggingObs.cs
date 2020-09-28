@@ -4,6 +4,8 @@ using UnityEditor;
 using com.PT.contest;
 using System.Collections.Generic;
 using System.Collections;
+using System.Runtime.InteropServices;
+using ExitGames.Client.Photon;
 
 public class DraggingObs : MonoBehaviourPunCallbacks
 {
@@ -47,6 +49,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             myColor.a = Mathf.MoveTowards(1f, 0.5f, Time.deltaTime);
             GetComponent<Renderer>().material.SetColor("_BaseColor", myColor);
         }
+        
     }
     
     private Vector3 screenPoint;
@@ -60,7 +63,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     
     private void OnMouseDown()
     {
-        
+        Manager.Instance.SetKinematic(true);
         myCamera = Manager.Instance.MyCamRef;
         if (PlayerArea != null)
         {
@@ -80,7 +83,23 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         
         if (canMoveObject)
         {
+            foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
+            {
+                rg.isKinematic = true;
+                rg.useGravity = false;
+            }
             base.photonView.RequestOwnership();
+            for(int i = 0; i < LockedObjects.Count; i++)
+            {
+                LockedObjects[i].GetComponent<PhotonView>().RequestOwnership();
+                if (LockedObjects[i].GetComponent<DraggingObs>().LockedObjects.Count != 0)
+                {
+                    for(int j=0;j< LockedObjects[i].GetComponent<DraggingObs>().LockedObjects.Count; j++)
+                    {
+                        LockedObjects[i].GetComponent<DraggingObs>().LockedObjects[j].GetComponent<PhotonView>().RequestOwnership();
+                    }
+                }
+            }
             gameObject.transform.parent = Manager.Instance.MyTransformRef;
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             if (Manager.Instance.LockObjects)
@@ -95,7 +114,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                         {
                             if (!LockedObjects.Contains(otherObj.LockedObjects[j]))
                             {
-                                LockedObjects.Add(otherObj.LockedObjects[j]);
+                               photonView.RPC("AddObjectToList", RpcTarget.AllBuffered, otherObj.LockedObjects[j].GetComponent<PhotonView>().ViewID);
                             }
                             
                         }
@@ -151,11 +170,10 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 {
                     transform.position += new Vector3(pas.x, 0, pas.z) * Input.mouseScrollDelta.y;
                 }
-                else
-                {
-                    transform.localPosition += new Vector3(mX, mY);
-                }
-                
+
+                transform.localPosition += new Vector3(mX, mY);
+                 
+
             }
             else
             {
@@ -183,32 +201,44 @@ public class DraggingObs : MonoBehaviourPunCallbacks
        
         if (canMoveObject)
         {
-            isMoving = false;
-            lerpAlha = false;
-            Cursor.lockState = CursorLockMode.None;
-            mouseRotationMode = false;
-            gameObject.transform.parent = null;
-            gameObject.GetComponent<Rigidbody>().useGravity = true;
-            photonView.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, true);
-            Cursor.visible = true;
-            if (Manager.Instance.LockObjects)
+            StartCoroutine(OnUpDelay());
+        }
+    }
+
+    private IEnumerator OnUpDelay()
+    {
+        yield return new WaitForRealSeconds(0.05f);
+        Manager.Instance.SetKinematic(false);
+        foreach(Rigidbody rg in FindObjectsOfType<Rigidbody>())
+        {
+            rg.isKinematic = false;
+            rg.useGravity = true;
+        }
+        isMoving = false;
+        lerpAlha = false;
+        Cursor.lockState = CursorLockMode.None;
+        mouseRotationMode = false;
+        gameObject.transform.parent = null;
+       
+       
+        photonView.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, true);
+        Cursor.visible = true;
+        if (Manager.Instance.LockObjects)
+        {
+            for (int i = 0; i < LockedObjects.Count; i++)
             {
-                for (int i = 0; i < LockedObjects.Count; i++)
+                LockedObjects[i].GetComponent<Rigidbody>().useGravity = true;
+                LockedObjects[i].parent = null;
+                LockedObjects[i].GetComponent<DraggingObs>().SetRPCGravity(true);
+            }
+            for (int i = 0; i < LockedObjects.Count; i++)
+            {
+                if (LockedObjects[i].GetComponent<DraggingObs>() != null)
                 {
-                    LockedObjects[i].GetComponent<Rigidbody>().useGravity = true;
-                    LockedObjects[i].GetComponent<Rigidbody>().isKinematic = false;
-                    LockedObjects[i].parent = null;
-                    //LockedObjects[i].GetComponent<DraggingObs>().SetRPCGravity(true);
-                }
-                for (int i = 0; i < LockedObjects.Count; i++)
-                {
-                    if (LockedObjects[i].GetComponent<DraggingObs>() != null)
+                    otherObj = LockedObjects[i].GetComponent<DraggingObs>();
+                    for (int j = 0; j < otherObj.LockedObjects.Count; j++)
                     {
-                        otherObj = LockedObjects[i].GetComponent<DraggingObs>();
-                        for (int j = 0; j < otherObj.LockedObjects.Count; j++)
-                        {
-                            LockedObjects.Remove(otherObj.LockedObjects[j]);
-                        }
+                        photonView.RPC("RemoveObjetFromList", RpcTarget.AllBuffered, otherObj.LockedObjects[j].GetComponent<PhotonView>().ViewID);
                     }
                 }
             }
@@ -221,6 +251,42 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         myRigidbody.useGravity = state;
     }
     private List<Transform> LockedObjects = new List<Transform>();
+
+    [PunRPC]
+    void AddObjectToList(int _objectID)
+    {
+        
+        foreach (PhotonView gg in FindObjectsOfType<PhotonView>())
+        {
+            if (gg.ViewID == _objectID)
+            {
+                if (!LockedObjects.Contains(gg.transform))
+                {
+                    LockedObjects.Add(gg.transform);
+                    Debug.Log("ARRIVED");
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void RemoveObjetFromList(int _objectID)
+    {
+        
+        foreach (PhotonView gg in FindObjectsOfType<PhotonView>())
+        {
+            if (gg.ViewID == _objectID)
+            {
+                if (LockedObjects.Contains(gg.transform))
+                {
+                    
+                    LockedObjects.Remove(gg.transform);
+                    Debug.Log("ARRIVED");
+                }
+            }
+        }
+    }
+
     public void SetRPCGravity(bool _state)
     {
         if (_state)
@@ -267,12 +333,17 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             {
                 if (!LockedObjects.Contains(collision.transform))
                 {
-                    LockedObjects.Add(collision.transform);
+                    photonView.RPC("AddObjectToList", RpcTarget.AllBuffered, collision.transform.GetComponent<PhotonView>().ViewID);
                 }
             }
         }
-       
-    }
+
+        //if (collision.transform.CompareTag("Floor"))
+        //{
+        //    myRigidbody.isKinematic = Manager.Instance.GetKinematic();
+        //}
+
+}
     
     private void OnCollisionExit(Collision collision)
     {
@@ -280,22 +351,23 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         if (collision.transform.CompareTag("Floor"))
         {
             isTouchingFloor = false;
-            
         }
         if (collision.transform.CompareTag("Staks"))
         {
             if (LockedObjects.Contains(collision.transform))
             {
-                LockedObjects.Remove(collision.transform);
+                photonView.RPC("RemoveObjetFromList", RpcTarget.AllBuffered, collision.transform.GetComponent<PhotonView>().ViewID);
+                SetRPCGravity(false);
             }
         }
+       
     }
     public bool isTouchingFloor = false;
     public void RemoveFromList(Transform _object)
     {
         if (LockedObjects.Contains(_object))
         {
-            LockedObjects.Remove(_object);
+            photonView.RPC("RemoveObjetFromList", RpcTarget.AllBuffered, _object.GetComponent<PhotonView>().ViewID);
         }
     }
 }

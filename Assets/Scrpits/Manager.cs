@@ -29,6 +29,17 @@ namespace com.PT.contest
         public GameObject pauseMenu;
         public bool EnableMovementOnly = false;
         public bool LockObjects = false;
+        private bool MakeKinematic = false;
+
+        public void SetKinematic(bool state)
+        {
+            MakeKinematic = state;
+        }
+
+        public bool GetKinematic()
+        {
+            return MakeKinematic;
+        }
         private void Start()
         {
             StartCoroutine(DoCamCheck());
