@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HUb.unity
     guid: ffa0da10e604eee4e9b34f556e37a205
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/POC_1E2.unity
     guid: 32d9186888cbca2459a9a02199a196ca
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/POC_1E4.unity
     guid: 5c29b2842347d5841acca065e71a4875
   - enabled: 1

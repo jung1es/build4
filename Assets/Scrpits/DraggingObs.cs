@@ -83,10 +83,9 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         
         if (canMoveObject)
         {
-            foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
+            if (Manager.Instance.LockObjects)
             {
-                rg.isKinematic = true;
-                rg.useGravity = false;
+                photonView.RPC("MakeObjectsKinematic", RpcTarget.AllBuffered, true);
             }
             base.photonView.RequestOwnership();
             for(int i = 0; i < LockedObjects.Count; i++)
@@ -171,8 +170,9 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                     transform.position += new Vector3(pas.x, 0, pas.z) * Input.mouseScrollDelta.y;
                 }
 
-                transform.localPosition += new Vector3(mX, mY);
-                 
+               transform.localPosition += new Vector3(mX, mY);
+               // Vector3 vToMove = transform.localPosition + new Vector3(mX, mY);
+               // transform.GetComponent<Rigidbody>().MovePosition(transform.position+transform.up*Time.fixedDeltaTime*mY);
 
             }
             else
@@ -209,11 +209,11 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     {
         yield return new WaitForRealSeconds(0.05f);
         Manager.Instance.SetKinematic(false);
-        foreach(Rigidbody rg in FindObjectsOfType<Rigidbody>())
+        if (Manager.Instance.LockObjects)
         {
-            rg.isKinematic = false;
-            rg.useGravity = true;
+            photonView.RPC("MakeObjectsKinematic", RpcTarget.AllBuffered, false);
         }
+       
         isMoving = false;
         lerpAlha = false;
         Cursor.lockState = CursorLockMode.None;
@@ -246,6 +246,32 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
+    void MakeObjectsKinematic(bool state)
+    {
+        if (state)
+        {
+            foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
+            {
+                if (rg.gameObject != gameObject)
+                {
+                    rg.isKinematic = true;
+                    rg.useGravity = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
+            {
+
+                rg.isKinematic = false;
+                
+                rg.useGravity = true;
+            }
+        }
+    }
+
+    [PunRPC]
     void SetRigidBodyGravity(bool state)
     {
         myRigidbody.useGravity = state;
@@ -263,7 +289,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 if (!LockedObjects.Contains(gg.transform))
                 {
                     LockedObjects.Add(gg.transform);
-                    Debug.Log("ARRIVED");
+                   
                 }
             }
         }
@@ -281,7 +307,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 {
                     
                     LockedObjects.Remove(gg.transform);
-                    Debug.Log("ARRIVED");
+                   
                 }
             }
         }
@@ -303,9 +329,9 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     {
         if (Manager.Instance.LockObjects)
         {
-            if (isMoving && !collision.transform.CompareTag("centre"))
+            if (isMoving && collision.transform.CompareTag("Floor"))
             {
-                minY = transform.position.y;
+                minY = 1;
             }
         }
         numOfObjects++;
