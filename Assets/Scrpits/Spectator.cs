@@ -24,7 +24,7 @@ public class Spectator : MonoBehaviourPun
         //cams.SetActive(photonView.IsMine);
         //        transform.LookAt(GameObject.FindGameObjectWithTag("centre").transform);
 
-        if (GameObject.FindGameObjectWithTag("trapz"))
+        if (GameObject.FindGameObjectWithTag("Staks"))
             selection = null;
         rotX = transform.rotation.x;
         rotY = transform.rotation.y;
@@ -39,15 +39,18 @@ public class Spectator : MonoBehaviourPun
             return;
         }*/
 
-        if (GameObject.FindGameObjectWithTag("trapz"))
+        if (GameObject.FindGameObjectWithTag("Staks"))
         {
             photonView.RPC("objsd", RpcTarget.All);
-
-            foreach (GameObject obj in objects)
+            if (objects != null)
             {
-                if (obj == selection) obj.GetComponent<poc2DRag>().selected = true;
-                else obj.GetComponent<poc2DRag>().selected = false;
+                foreach (GameObject obj in objects)
+                {
+                    if (obj == selection) obj.GetComponent<poc2DRag>().selected = true;
+                    else obj.GetComponent<poc2DRag>().selected = false;
+                }
             }
+            
 
             if (Input.GetKeyDown(KeyCode.Tab)) photonView.RPC("nextObj", RpcTarget.All);
 
@@ -136,14 +139,8 @@ public class Spectator : MonoBehaviourPun
     [PunRPC]
     void objsd()
     {
-        objects = GameObject.FindGameObjectsWithTag("trapz");
+        objects = GameObject.FindGameObjectsWithTag("Staks");
 
-        objects[0] = GameObject.Find("Trapeziod (1)");
-        objects[1] = GameObject.Find("Trapeziod (2)");
-        objects[2] = GameObject.Find("Trapeziod (3)");
-        objects[3] = GameObject.Find("Trapeziod (4)");
-        objects[4] = GameObject.Find("Trapeziod (5)");
-        objects[5] = GameObject.Find("Trapeziod (6)");
     }
 }
 

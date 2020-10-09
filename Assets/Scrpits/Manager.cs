@@ -9,8 +9,6 @@ namespace com.PT.contest
     public class Manager : MonoBehaviour
     {
         public static Manager Instance;
-        PhotonView myPhotonView;
-        Camera cam;
         
         private void Awake()
         {
@@ -29,6 +27,7 @@ namespace com.PT.contest
         public GameObject pauseMenu;
         public bool EnableMovementOnly = false;
         public bool LockObjects = false;
+        public bool IsSharedControl = false;
         private bool MakeKinematic = false;
 
         public void SetKinematic(bool state)
@@ -43,7 +42,6 @@ namespace com.PT.contest
         private void Start()
         {
             StartCoroutine(DoCamCheck());
-            Debug.Log("STARTING MANAGER: " + PhotonNetwork.LocalPlayer.UserId);
             Spawn();
         }
 
@@ -64,7 +62,7 @@ namespace com.PT.contest
         {
             while (true)
             {
-                yield return new WaitForSecondsRealtime(0.5f);
+                yield return new WaitForSecondsRealtime(0.2f);
                 if (MyCamRef != null)
                 {
                     foreach(Camera cam in FindObjectsOfType<Camera>())
@@ -81,19 +79,16 @@ namespace com.PT.contest
         {
             yield return new WaitForSecondsRealtime(0.2f);
             obj.transform.rotation = spawnPoint[0].rotation;
-
         }
         GameObject obj;
         public void Spawn()
         {
-            
             if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
             {
                 obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[0].position, spawnPoint[0].rotation);
                 
                 if (MyCamRef == null)
                 {
-                    Debug.Log("CAM 1");
                     MyCamRef = obj.GetComponentInChildren<Camera>();
                     MyTransformRef = obj.transform;
                 }
@@ -103,7 +98,6 @@ namespace com.PT.contest
                 GameObject obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[1].position, spawnPoint[1].rotation);
                 if (MyCamRef == null)
                 {
-                    Debug.Log("CAM 2");
                     MyCamRef = obj.GetComponentInChildren<Camera>();
                     MyTransformRef = obj.transform;
                 }
@@ -113,15 +107,10 @@ namespace com.PT.contest
                 GameObject obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[2].position, spawnPoint[2].rotation);
                 if (MyCamRef == null)
                 {
-                    Debug.Log("CAM 3");
                     MyCamRef = obj.GetComponentInChildren<Camera>();
                     MyTransformRef = obj.transform;
                 }
             }
-            
-         
-
-
         }
 
         

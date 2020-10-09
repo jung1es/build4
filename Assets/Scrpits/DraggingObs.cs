@@ -298,7 +298,6 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     [PunRPC]
     void RemoveObjetFromList(int _objectID)
     {
-        
         foreach (PhotonView gg in FindObjectsOfType<PhotonView>())
         {
             if (gg.ViewID == _objectID)
@@ -337,7 +336,6 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         numOfObjects++;
         if (collision.transform.CompareTag("Floor"))
         {
-            
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Staks"))
             {
                 obj.GetComponent<DraggingObs>().RemoveFromList(transform);
@@ -368,7 +366,6 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         //{
         //    myRigidbody.isKinematic = Manager.Instance.GetKinematic();
         //}
-
 }
     
     private void OnCollisionExit(Collision collision)
@@ -386,7 +383,6 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 SetRPCGravity(false);
             }
         }
-       
     }
     public bool isTouchingFloor = false;
     public void RemoveFromList(Transform _object)

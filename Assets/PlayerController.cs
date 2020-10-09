@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using com.PT.contest;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,17 +17,26 @@ public class PlayerController : MonoBehaviour
         return MyArea;
     }
     // Start is called before the first frame update
+    GameObject[] DragableObjects;
+    private int dragableIndexSelect = 0;
     void Start()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             GetComponent<FreeCamera>().enabled = false;
         }
+        DragableObjects = new GameObject[FindObjectsOfType<DraggingObs>().Length];
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (Manager.Instance.IsSharedControl)
+            {
+
+            }
+        }
     }
+
 }

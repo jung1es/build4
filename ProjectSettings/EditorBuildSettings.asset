@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/POC_4E3.unity
     guid: 11ab2c0e13de109478679f9f6e49beb7
+  - enabled: 1
+    path: Assets/Scenes/POC_1Shared.unity
+    guid: 00faa7f88a4c13947ade97e9a40d8ae2
   m_configObjects: {}

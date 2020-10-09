@@ -13,7 +13,7 @@ public class poc2DRag : MonoBehaviourPunCallbacks
 
     float x, y, z, q, x1, y1, z1;
     float prex, prez;
-    public float rotSen = 100;
+    private float rotSen = 1;
     public float min;
 
     Rigidbody rb;
@@ -32,8 +32,20 @@ public class poc2DRag : MonoBehaviourPunCallbacks
     private void Update()
     {
 
-        if (selected) photonView.gameObject.GetComponent<Renderer>().material = select;
-        else photonView.gameObject.GetComponent<Renderer>().material = notsel;
+        if (selected)
+        {
+            for (int i = 0; i < photonView.gameObject.GetComponent<Renderer>().materials.Length; i++)
+            {
+                photonView.gameObject.GetComponent<Renderer>().materials[i].color = Color.red;
+            }
+        }
+        else {
+            for (int i = 0; i < photonView.gameObject.GetComponent<Renderer>().materials.Length; i++)
+            {
+                photonView.gameObject.GetComponent<Renderer>().materials[i].color = Color.blue;
+            }
+        }
+       
 
 
         if (selected)
