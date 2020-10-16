@@ -29,8 +29,8 @@ public class Spectator : MonoBehaviourPun
         rotX = transform.rotation.x;
         rotY = transform.rotation.y;
     }
-    
-   
+
+    public bool m_MoveCamera = true;
     // Update is called once per frame
     void Update()
     {
@@ -38,38 +38,30 @@ public class Spectator : MonoBehaviourPun
         {
             return;
         }*/
-
-        if (GameObject.FindGameObjectWithTag("Staks"))
-        {
-            photonView.RPC("objsd", RpcTarget.All);
-            if (objects != null)
+        if (Manager.Instance.IsSharedControl) {
+            if (GameObject.FindGameObjectWithTag("Staks"))
             {
-                foreach (GameObject obj in objects)
+                photonView.RPC("objsd", RpcTarget.All);
+                if (objects != null)
                 {
-                    if (obj == selection) obj.GetComponent<poc2DRag>().selected = true;
-                    else obj.GetComponent<poc2DRag>().selected = false;
+                    foreach (GameObject obj in objects)
+                    {
+                        if (obj == selection) obj.GetComponent<poc2DRag>().selected = true;
+                        else obj.GetComponent<poc2DRag>().selected = false;
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.Tab)) photonView.RPC("nextObj", RpcTarget.All);
+
+                if (m_MoveCamera)
+                {
+                    speed = 1;
+                    rotX += Input.GetAxis("Horizontal") * speed;
+                    rotY -= Input.GetAxis("Vertical") * speed;
+                    transform.rotation = Quaternion.Euler(rotY, rotX, 0);
                 }
             }
-            
-
-            if (Input.GetKeyDown(KeyCode.Tab)) photonView.RPC("nextObj", RpcTarget.All);
-
-            speed = 1;
-            rotX += Input.GetAxis("Horizontal") * speed;
-            rotY -= Input.GetAxis("Vertical") * speed;
-            //rotY = Mathf.Clamp(rotY, minY, maxY);
-            transform.rotation = Quaternion.Euler(rotY, rotX, 0);
-
-            /*
-            speed = 300;
-            rotX += Input.GetAxis("Mouse X") * Time.deltaTime * speed;
-            rotY -= Input.GetAxis("Mouse Y") * Time.deltaTime * speed;
-
-            //rotY = Mathf.Clamp(rotY, minY, maxY);
-            transform.rotation = Quaternion.Euler(rotY, rotX, 0);*/
-
         }
-        else
+        else  
         {
             speed = 20;
             if (!Manager.Instance.EnableMovementOnly)
@@ -87,33 +79,24 @@ public class Spectator : MonoBehaviourPun
             }
             else
             {
-                //if (Input.GetKey(KeyCode.A))
-                //    transform.Translate(Vector3.left * speed /2* Time.deltaTime);
-
-                //if (Input.GetKey(KeyCode.D))
-                //    transform.Translate(-Vector3.left * speed /2* Time.deltaTime);
-
+                
                 if (Input.GetKey(KeyCode.E)&&!Input.GetMouseButton(0))
                 {
                     transform.Rotate(Vector3.up, 40 * Time.deltaTime, Space.World);
-                    // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
                 }
 
                 if (Input.GetKey(KeyCode.Q) && !Input.GetMouseButton(0))
                 {
                     transform.Rotate(Vector3.up, -40 * Time.deltaTime, Space.World);
-                    //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
                 }
                 if (Input.GetKey(KeyCode.C))
                 {
                     transform.Rotate(Vector3.left, 40 * Time.deltaTime, Space.Self);
-                    // transform.RotateAround(Manager.Instance.transform.position, Vector3.up, 20 * Time.deltaTime);
                 }
 
                 if (Input.GetKey(KeyCode.Z))
                 {
                     transform.Rotate(Vector3.left, -40 * Time.deltaTime, Space.Self);
-                    //transform.RotateAround(Manager.Instance.transform.position, Vector3.up, -20 * Time.deltaTime);
                 }
             }
         }

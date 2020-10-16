@@ -68,7 +68,11 @@ namespace com.PT.contest
             lvlSelction.SetActive(!on);
             on = !on;
         }
-
+        public GameObject MenuHolder;
+        public void HideOrShowMenu(bool _state)
+        {
+            MenuHolder.SetActive(_state);
+        }
         public void StartGame_POC_1()
         {
         PhotonNetwork.LoadLevel(1);
