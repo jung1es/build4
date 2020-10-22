@@ -30,7 +30,7 @@ public class poc2DRag : MonoBehaviourPunCallbacks
         rb = GetComponent<Rigidbody>();
         myObjColor = GetComponent<Renderer>().material.color;
     }
-
+    private Transform CameraComp;
     private void Update()
     {
         if (selected)
@@ -63,27 +63,31 @@ public class poc2DRag : MonoBehaviourPunCallbacks
             }
             rb.useGravity = false;
             rb.velocity = Vector3.zero;
+            if (CameraComp == null)
+            {
+                CameraComp = FindObjectOfType<Camera>().transform;
+            }
             if (Input.GetKey(KeyCode.Q))
             {
-                var localDirection = Camera.main.transform.InverseTransformDirection(Camera.main.transform.up);
+                var localDirection = CameraComp.InverseTransformDirection(CameraComp.up);
                 transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
             }
             else if (Input.GetKey(KeyCode.A))
             {
                 if (transform.position.y > 0.6f)
                 {
-                    var localDirection = Camera.main.transform.InverseTransformDirection(Camera.main.transform.up*-1);
+                    var localDirection = CameraComp.InverseTransformDirection(CameraComp.up*-1);
                     transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
                 }
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                var localDirection = Camera.main.transform.InverseTransformDirection(Camera.main.transform.right);
+                var localDirection = CameraComp.InverseTransformDirection(CameraComp.right);
                 transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
             }
             else if (Input.GetKey(KeyCode.W))
             {
-                var localDirection = Camera.main.transform.InverseTransformDirection(Camera.main.transform.right*-1);
+                var localDirection = CameraComp.InverseTransformDirection(CameraComp.right*-1);
                 transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
             }
             else if (Input.mouseScrollDelta.y != 0)
