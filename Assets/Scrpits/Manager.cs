@@ -59,7 +59,7 @@ namespace com.PT.contest
                     {
                         if (cam != MyCamRef)
                         {
-                            Destroy(cam.gameObject);
+                            //Destroy(cam.gameObject);
                         }
                     }
                 }
@@ -106,7 +106,7 @@ namespace com.PT.contest
         
         public void Menu()
         {
-            SceneManager.LoadScene(0);
+            //SceneManager.LoadScene(0);
         }
     }
 }

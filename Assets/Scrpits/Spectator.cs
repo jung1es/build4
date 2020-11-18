@@ -116,7 +116,16 @@ public class Spectator : MonoBehaviourPun
         {
             q++;
             selection = objects[q];
+            foreach(Spectator _spec in FindObjectsOfType<Spectator>())
+            {
+                _spec.SetSelection(selection);
+            }
         }
+    }
+
+    public void SetSelection(GameObject obj)
+    {
+        selection = obj;
     }
 
     [PunRPC]

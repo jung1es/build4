@@ -48,12 +48,13 @@ public class poc2DRag : MonoBehaviourPunCallbacks
         }
        
 
-
+        
         if (selected)
         {
 
             // x1 = Input.GetAxis("Horizontal") * 0.2f;
             // y1 = Input.GetAxis("Vertical") * 0.2f;
+           
             Vector3 pas = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
             pas.Normalize();
             
@@ -69,26 +70,26 @@ public class poc2DRag : MonoBehaviourPunCallbacks
             }
             if (Input.GetKey(KeyCode.Q))
             {
-                var localDirection = CameraComp.InverseTransformDirection(CameraComp.up);
+                var localDirection = CameraComp.InverseTransformDirection(Camera.main.transform.up);
                 transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
             }
             else if (Input.GetKey(KeyCode.A))
             {
                 if (transform.position.y > 0.6f)
                 {
-                    var localDirection = CameraComp.InverseTransformDirection(CameraComp.up*-1);
+                    var localDirection = CameraComp.InverseTransformDirection(Camera.main.transform.up * -1);
                     transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
                 }
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                var localDirection = CameraComp.InverseTransformDirection(CameraComp.right);
-                transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
+               
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z), 5 * Time.deltaTime);
+              
             }
             else if (Input.GetKey(KeyCode.W))
             {
-                var localDirection = CameraComp.InverseTransformDirection(CameraComp.right*-1);
-                transform.Translate(localDirection * 5 * Time.deltaTime, Space.World);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z), -5 * Time.deltaTime);
             }
             else if (Input.mouseScrollDelta.y != 0)
             {
@@ -170,22 +171,22 @@ public class poc2DRag : MonoBehaviourPunCallbacks
     {
         if (selected)
         {
-            Vector3 pas = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
-            pas.Normalize();
+            //Vector3 pas = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+            //pas.Normalize();
 
 
-            mX = Input.GetAxis("Mouse X");
-            mY = Input.GetAxis("Mouse Y");
+            //mX = Input.GetAxis("Mouse X");
+            //mY = Input.GetAxis("Mouse Y");
 
 
-            transform.localPosition += new Vector3(mX, mY);
+            //transform.localPosition += new Vector3(mX, mY);
 
 
-            if (transform.position.y < min)
-            {
-                transform.position = new Vector3(transform.position.x, min, transform.position.z);
-            }
-            gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //if (transform.position.y < min)
+            //{
+            //    transform.position = new Vector3(transform.position.x, min, transform.position.z);
+            //}
+            //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
 
 

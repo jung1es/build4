@@ -60,7 +60,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         PlayerArea = playerArea;
     }
     private bool canMoveObject = true;
-    
+    public bool isOnConveyor = false;
     private void OnMouseDown()
     {
         Manager.Instance.SetKinematic(true);
@@ -252,7 +252,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         {
             foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
             {
-                if (rg.gameObject != gameObject)
+                if (rg.gameObject != gameObject&&!rg.transform.CompareTag("Floor")&&!rg.GetComponent<DraggingObs>().isOnConveyor)
                 {
                     rg.isKinematic = true;
                     rg.useGravity = true;
@@ -264,9 +264,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             foreach (Rigidbody rg in FindObjectsOfType<Rigidbody>())
             {
 
-                rg.isKinematic = false;
-                
-                rg.useGravity = true;
+                if (!rg.transform.CompareTag("Floor")&& !rg.GetComponent<DraggingObs>().isOnConveyor)
+                {
+                    rg.isKinematic = false;
+
+                    rg.useGravity = true;
+                }
             }
         }
     }
