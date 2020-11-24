@@ -22,16 +22,12 @@ namespace com.PT.contest
         {
             if (Screen.fullScreen) Screen.fullScreen = false;
             menu.GetComponent<CanvasGroup>().interactable = true;
-            Join();
+            PhotonNetwork.JoinRandomRoom();
         }
 
-        public override void OnJoinedRoom()
-        {
-            base.OnJoinedRoom();
-        }
+       
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
-            base.OnCreateRoomFailed(returnCode, message);
             Debug.Log("FAILED TO CREATE ROOM");
         }
         public override void OnJoinRandomFailed(short returnCode, string message)
@@ -42,25 +38,19 @@ namespace com.PT.contest
 
         public void Create()
         {
+            // max player of rooms is set to 3
             RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = (byte)3 };
-            PhotonNetwork.CreateRoom("Room0", roomOps);
+            int roomRandomNumber = Random.Range(0,999);
+            PhotonNetwork.CreateRoom("Room " + roomRandomNumber, roomOps);
         }
 
-        public override void OnCreatedRoom()
-        {
-            base.OnCreatedRoom();
-            Join();
-        }
+      
         public void Connect()
         {
             PhotonNetwork.GameVersion = "0.0.0";
             PhotonNetwork.ConnectUsingSettings();
         }
 
-        public void Join()
-        {
-            PhotonNetwork.JoinRandomRoom();
-        }
          
         public void Switch()
         {
@@ -73,48 +63,13 @@ namespace com.PT.contest
         {
             MenuHolder.SetActive(_state);
         }
-        public void StartGame_POC_1()
-        {
-        PhotonNetwork.LoadLevel(1);
-        }
+       
 
-        public void StartGame_POC_2()
+        public void StartGame_POC(int value)
         {
-                PhotonNetwork.LoadLevel(2);
-        }
 
-        public void StartGame_POC_3()
-        {
-            
-                PhotonNetwork.LoadLevel(3);
-           
-        }
+            PhotonNetwork.LoadLevel(value);
 
-        public void StartGame_POC_4()
-        {
-           
-                PhotonNetwork.LoadLevel(4);
-          
-        }
-
-        public void StartGame_POC_5()
-        {
-           
-                PhotonNetwork.LoadLevel(5);
-            
-        }
-
-        public void StartGame_POC_6()
-        {
-                PhotonNetwork.LoadLevel(6);
-            
-        }
-
-        public void StartGame_POC_7()
-        {
-            
-                PhotonNetwork.LoadLevel(7);
-            
         }
     }
 

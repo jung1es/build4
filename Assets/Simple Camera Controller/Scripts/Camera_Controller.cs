@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
- 
+using Photon.Pun;
+
 public class Camera_Controller : MonoBehaviour
 {
 
@@ -19,9 +20,25 @@ public class Camera_Controller : MonoBehaviour
     private float Total_Speed = 1.0f; //Total speed variable for shift
     public bool useLeftClick = false;
 
+    private PhotonView _pv;
+    [SerializeField]
+    private GameObject _cameraObject;
+
+    private void Awake()
+    {
+        _pv = GetComponent<PhotonView>();
+    }
+
+
+    private void Start()
+    {
+        if(!_pv.IsMine)
+            _cameraObject.SetActive(false);
+    }
 
     void Update()
     {
+        if(!_pv.IsMine) return;
 
 
         if (!useLeftClick&&Input.GetMouseButton(1))

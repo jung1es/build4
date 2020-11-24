@@ -10,6 +10,21 @@ namespace com.PT.contest
     {
         public static Manager Instance;
         
+      
+
+        public string playerPrefab;
+        public Transform[] spawnPoint;
+        public GameObject pauseMenu;
+        public bool EnableMovementOnly = false;
+        public bool LockObjects = false;
+        public bool IsSharedControl = false;
+        private bool MakeKinematic = false;
+
+        public Camera MyCamRef;
+        public Transform MyTransformRef;
+        private GameObject obj;
+
+
         private void Awake()
         {
             if (Instance == null)
@@ -22,14 +37,6 @@ namespace com.PT.contest
             }
         }
 
-        public string playerPrefab;
-        public Transform[] spawnPoint;
-        public GameObject pauseMenu;
-        public bool EnableMovementOnly = false;
-        public bool LockObjects = false;
-        public bool IsSharedControl = false;
-        private bool MakeKinematic = false;
-
         public void SetKinematic(bool state)
         {
             MakeKinematic = state;
@@ -41,36 +48,18 @@ namespace com.PT.contest
         }
         private void Start()
         {
-            StartCoroutine(DoCamCheck());
             Spawn();
         }
 
-        
-        public Camera MyCamRef;
-        public Transform MyTransformRef;
-        IEnumerator DoCamCheck()
-        {
-            while (true)
-            {
-                yield return new WaitForSecondsRealtime(0.2f);
-                if (MyCamRef != null)
-                {
-                    foreach(Camera cam in FindObjectsOfType<Camera>())
-                    {
-                        if (cam != MyCamRef)
-                        {
-                            //Destroy(cam.gameObject);
-                        }
-                    }
-                }
-            }
-        }
+       
         private IEnumerator SetRotDelay()
         {
             yield return new WaitForSecondsRealtime(0.2f);
             obj.transform.rotation = spawnPoint[0].rotation;
         }
-        GameObject obj;
+
+
+
         public void Spawn()
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
@@ -108,5 +97,7 @@ namespace com.PT.contest
         {
             //SceneManager.LoadScene(0);
         }
+
+        
     }
 }

@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class Conveyor : MonoBehaviour
 {
+    [HideInInspector]
+    public bool isMoving = true;
     public float Speed;
-    Rigidbody myRgd;
-    // Start is called before the first frame update
     public static Conveyor Instance;
+
     PhotonView myPhotonView;
+    Rigidbody myRgd;
+
     private void Awake()
     {
         if (Instance == null)
@@ -26,7 +29,7 @@ public class Conveyor : MonoBehaviour
         myRgd = GetComponent<Rigidbody>();
         myPhotonView = GetComponent<PhotonView>();
     }
-    private bool isMoving = true;
+    
     public void StartStopMoving(bool _move)
     {
         isMoving = _move;
@@ -42,16 +45,7 @@ public class Conveyor : MonoBehaviour
     {
         Conveyor.Instance.SetMovingLocal(_move);
     }
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if (isMoving)
-        {
-            Vector3 pos = myRgd.position;
-            myRgd.position += -transform.forward * Speed * Time.fixedDeltaTime;
-            myRgd.MovePosition(pos);
-        }
-    }
+   
 
     private void OnCollisionStay(Collision collision)
     {
@@ -64,7 +58,7 @@ public class Conveyor : MonoBehaviour
     {
         if (collision.transform.CompareTag("Staks"))
         {
-            collision.transform.GetComponent<DraggingObs>().isOnConveyor = true;
+            collision.transform.GetComponent<DraggingObs>().isOnConveyor = false;
         }
     }
 }
