@@ -45,6 +45,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     private bool            movedByConvery;
 
     public List<Transform> contactObjects = new List<Transform>();
+    private IEnumerator checkParentIE;
 
     private void Awake()
     {
@@ -488,8 +489,29 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         }
 
       
-}
+    }
     
+   
+    IEnumerator CheckParentOnCollision()
+    {
+        yield return new WaitForSeconds(0.1f);
+        int counter = 0;
+        bool check = false;
+        while(counter < 3)
+        {
+            if(transform.parent != null && contactObjects.Contains(transform.parent))
+            {
+                check = true;
+            }
+            yield return null;
+        }
+        if(!check)
+        {
+            pv.RPC("MakeObjectNonKinematic", RpcTarget.AllBuffered);
+            pv.RPC("ReleaseFromParent", RpcTarget.AllBuffered);
+        }
+        checkParentIE = null;
+    }
     private void OnCollisionExit(Collision collision)
     {
 
@@ -497,13 +519,20 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         {
             contactObjects.Remove(collision.transform);
         }
+        
 
-
-        if(contactObjects.Count == 0)
+        if( collision.transform == transform.parent )
         {
-            pv.RPC("MakeObjectNonKinematic",RpcTarget.AllBuffered);
-            pv.RPC("ReleaseFromParent", RpcTarget.AllBuffered);
+            if(checkParentIE == null)
+            {
+                checkParentIE = CheckParentOnCollision();
+                StartCoroutine(checkParentIE);
+            }
+           
         }
+
+       
+
         numOfObjects--;
         if (collision.transform.CompareTag("Floor"))
         {
