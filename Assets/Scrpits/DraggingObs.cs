@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using UnityEditor;
 using com.PT.contest;
 using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.InteropServices;
 using ExitGames.Client.Photon;
 
 public class DraggingObs : MonoBehaviourPunCallbacks
@@ -46,6 +44,8 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     public  bool            smallCube;
     private bool            movedByConvery;
 
+    public List<Transform> contactObjects = new List<Transform>();
+
     private void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -74,6 +74,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
 
         ChangeMaterialAlphaColor();
 
+        FollowParent();
     }
 
    
@@ -116,6 +117,25 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         PlayerArea = playerArea;
     }
 
+    private bool isFollowingParnt , firstIntializationFollowinParent;
+    private Vector3 parentLastPosition;
+    private Vector3 deltaFromParent;
+   
+    void FollowParent()
+    {
+        if(isFollowingParnt && !firstIntializationFollowinParent)
+        {
+            firstIntializationFollowinParent = true;
+            parentLastPosition = Manager.Instance.MyTransformRef.position;
+        }
+
+        if(isFollowingParnt && firstIntializationFollowinParent)
+        {
+            deltaFromParent = Manager.Instance.MyTransformRef.position - parentLastPosition;
+            parentLastPosition = Manager.Instance.MyTransformRef.position;
+        }
+    }
+
     private void OnMouseDown()
     {
         onMouse = true;
@@ -155,7 +175,10 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                     }
                 }
             }
-            gameObject.transform.parent = Manager.Instance.MyTransformRef;
+
+            isFollowingParnt = true;
+            // gameObject.transform.parent = Manager.Instance.MyTransformRef;
+            
             myRigidbody.useGravity = false;
 
 
@@ -228,10 +251,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                     transform.position += new Vector3(pas.x, 0, pas.z) * Input.mouseScrollDelta.y;
                 }
 
-               transform.localPosition += new Vector3(mX, mY);
-               // Vector3 vToMove = transform.localPosition + new Vector3(mX, mY);
-               // transform.GetComponent<Rigidbody>().MovePosition(transform.position+transform.up*Time.fixedDeltaTime*mY);
+                mY = (!CheckContactObjectBelow() && mY < 0) ? 0 : mY;
 
+                deltaFromParent = (!CheckContactObjectBelow() && deltaFromParent.y < 0) ? Vector3.zero : deltaFromParent;
+
+                transform.localPosition += new Vector3(mX, mY) + deltaFromParent;
+              
             }
             else
             {
@@ -262,9 +287,10 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         }
 
         pv.RPC("MakeObjectNonKinematic", RpcTarget.AllBuffered);
-    }
 
-    
+        isFollowingParnt = false;
+        firstIntializationFollowinParent = false;
+    }
 
     private IEnumerator OnUpDelay()
     {
@@ -387,6 +413,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         myRigidbody.isKinematic = false;
         myRigidbody.useGravity = true;
     }
+
     [PunRPC]
     void ReleaseFromParent()
     {
@@ -407,6 +434,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
   
     void OnCollisionEnter(Collision collision)
     {
+        if(!contactObjects.Contains(collision.transform))
+        {
+            contactObjects.Add(collision.transform);
+        }
+
+
         if (Manager.Instance.LockObjects)
         {
             if (isMoving && collision.transform.CompareTag("Floor"))
@@ -452,6 +485,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     
     private void OnCollisionExit(Collision collision)
     {
+
+        if (contactObjects.Contains(collision.transform))
+        {
+            contactObjects.Remove(collision.transform);
+        }
+
         numOfObjects--;
         if (collision.transform.CompareTag("Floor"))
         {
@@ -469,24 +508,10 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         if(!onMouse)
         {
             pv.RPC("MakeObjectNonKinematic", RpcTarget.AllBuffered);
-
-            if (transform.parent == collision.transform)
-            {
-              // StartCoroutine(CheckFarDistanceFromParent(collision.transform));
-            }
                 
         }
        
 
-
-    }
-
-    IEnumerator CheckFarDistanceFromParent(Transform t)
-    {
-        yield return new WaitForSeconds(0.5f);
-        float d = Vector3.Distance(transform.position,t.position);
-        if(d > 1f)
-            pv.RPC("ReleaseFromParent", RpcTarget.AllBuffered);
 
     }
 
@@ -497,4 +522,19 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             pv.RPC("RemoveObjetFromList", RpcTarget.AllBuffered, _object.GetComponent<PhotonView>().ViewID);
         }
     }
+
+  
+
+    bool CheckContactObjectBelow()
+    {
+        bool isBelowEmpty = true;
+
+        foreach(var t in contactObjects)
+        {
+            if(transform.position.y > t.position.y)
+                isBelowEmpty =false;
+        }
+        return isBelowEmpty;
+    }
+
 }
