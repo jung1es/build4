@@ -255,7 +255,10 @@ public class DraggingObs : MonoBehaviourPunCallbacks
 
                 deltaFromParent = (!CheckContactObjectBelow() && deltaFromParent.y < 0) ? Vector3.zero : deltaFromParent;
 
-                transform.localPosition += new Vector3(mX, mY) + deltaFromParent;
+                Vector3 cameraRight = Manager.Instance.MyCamRef.transform.right;
+                cameraRight.y = 0;
+
+                transform.localPosition += new Vector3(0, mY) + deltaFromParent + cameraRight * mX;
               
             }
             else
@@ -269,11 +272,15 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             }
             if (Input.GetKey(KeyCode.Q))
             {
-                transform.position -= new Vector3(pas.x, 0, pas.z) * 0.1f;
+                Vector3 cameraForward = Manager.Instance.MyCamRef.transform.forward;
+                cameraForward.y = 0;
+                transform.localPosition -= cameraForward * 0.1f;
             }
             else if (Input.GetKey(KeyCode.E))
             {
-                transform.position += new Vector3(pas.x, 0, pas.z) * 0.1f;
+                Vector3 cameraForward = Manager.Instance.MyCamRef.transform.forward;
+                cameraForward.y = 0;
+                transform.localPosition += cameraForward * 0.1f;
             }
         }
     }
