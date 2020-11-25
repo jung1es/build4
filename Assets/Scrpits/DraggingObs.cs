@@ -498,6 +498,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             contactObjects.Remove(collision.transform);
         }
 
+
+        if(contactObjects.Count == 0)
+        {
+            pv.RPC("MakeObjectNonKinematic",RpcTarget.AllBuffered);
+            pv.RPC("ReleaseFromParent", RpcTarget.AllBuffered);
+        }
         numOfObjects--;
         if (collision.transform.CompareTag("Floor"))
         {
