@@ -62,7 +62,6 @@ namespace com.PT.contest
 
         public void Spawn()
         {
-            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber + " Malek contact" );
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
             {

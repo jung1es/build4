@@ -6,51 +6,38 @@ using Photon.Realtime;
 namespace com.PT.contest
 {
 
-    public class Launcher : MonoBehaviourPunCallbacks
+    public class Launcher : MonoBehaviour
     {
-        public GameObject menu, lvlSelction;
+        public GameObject menu, lvlSelction,roomMenu;
         bool on;
 
-      
-        private void Start()
+        private void OnEnable()
         {
-            PhotonNetwork.AutomaticallySyncScene = true;
-            PhotonNetwork.ConnectUsingSettings();
+            PhotonRoomManager.instance.OnConnectMaster          += ConnectToMaster;
+            PhotonRoomManager.instance.OnCreatedRoomSuccesful   += RoomCreated;
+        }
+        private void OnDisable()
+        {
+            PhotonRoomManager.instance.OnConnectMaster          -= ConnectToMaster;
+            PhotonRoomManager.instance.OnCreatedRoomSuccesful   -= RoomCreated;
         }
 
-        public override void OnConnectedToMaster()
+      
+
+        void ConnectToMaster()
         {
             if (Screen.fullScreen) Screen.fullScreen = false;
+            roomMenu.SetActive(true);
+
+        }
+
+       void RoomCreated()
+        {
             menu.GetComponent<CanvasGroup>().interactable = true;
-            PhotonNetwork.JoinRandomRoom();
+            roomMenu.SetActive(false);
         }
-
-       
-        public override void OnCreateRoomFailed(short returnCode, string message)
-        {
-            Debug.Log("FAILED TO CREATE ROOM");
-        }
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            Debug.Log("Failed to join room");
-            Create();
-        }
-
-        public void Create()
-        {
-            // max player of rooms is set to 3
-            RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = (byte)3 };
-            int roomRandomNumber = Random.Range(0,999);
-            PhotonNetwork.CreateRoom("Room " + roomRandomNumber, roomOps);
-        }
-
       
-        public void Connect()
-        {
-            PhotonNetwork.GameVersion = "0.0.0";
-            PhotonNetwork.ConnectUsingSettings();
-        }
-
+      
          
         public void Switch()
         {
@@ -59,6 +46,7 @@ namespace com.PT.contest
             on = !on;
         }
         public GameObject MenuHolder;
+
         public void HideOrShowMenu(bool _state)
         {
             MenuHolder.SetActive(_state);
