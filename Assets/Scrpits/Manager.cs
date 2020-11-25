@@ -62,6 +62,8 @@ namespace com.PT.contest
 
         public void Spawn()
         {
+            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber + " Malek contact" );
+
             if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
             {
                 obj = PhotonNetwork.Instantiate(playerPrefab, spawnPoint[0].position, spawnPoint[0].rotation);

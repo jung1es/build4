@@ -76,9 +76,30 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         ChangeMaterialAlphaColor();
 
         FollowParent();
+
+        
+        if (contactObjects.Count == 0)
+        {
+            countThershold++;
+
+            if(countThershold > 5)
+            {
+                countThershold = 0;
+                transform.parent = null;
+            }
+
+        }
+        else
+        {
+            countThershold = 0;
+        }
+        
+
     }
 
-   
+   private int countThershold;
+
+
 
     private void FixedUpdate()
     {
@@ -180,7 +201,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             isFollowingParnt = true;
             // gameObject.transform.parent = Manager.Instance.MyTransformRef;
             
-            myRigidbody.useGravity = false;
+         
 
 
 
@@ -204,14 +225,14 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 }
                 for (int i = 0; i < LockedObjects.Count; i++)
                 {
-                    LockedObjects[i].GetComponent<Rigidbody>().useGravity = false;
+                  
                     LockedObjects[i].GetComponent<Rigidbody>().isKinematic = true;
                     LockedObjects[i].SetParent(transform);
                     LockedObjects[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
                     
                 }
             }
-            pv.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, false);
+          
             gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             lerpAlha = true;
             Cursor.visible = false;
@@ -298,6 +319,11 @@ public class DraggingObs : MonoBehaviourPunCallbacks
 
         isFollowingParnt = false;
         firstIntializationFollowinParent = false;
+
+       for(int i = 0 ; i < transform.childCount ; i++)
+        {
+            transform.GetChild(i).parent = null;
+        }
     }
 
     private IEnumerator OnUpDelay()
@@ -316,15 +342,15 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         gameObject.transform.parent = null;
        
        
-        pv.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, true);
+   
         Cursor.visible = true;
         if (Manager.Instance.LockObjects)
         {
             for (int i = 0; i < LockedObjects.Count; i++)
             {
-                LockedObjects[i].GetComponent<Rigidbody>().useGravity = true;
+               
                 LockedObjects[i].parent = null;
-                LockedObjects[i].GetComponent<DraggingObs>().SetRPCGravity(true);
+
             }
             for (int i = 0; i < LockedObjects.Count; i++)
             {
@@ -350,7 +376,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 if (rg.gameObject != gameObject&&!rg.transform.CompareTag("Floor")&&!rg.GetComponent<DraggingObs>().isOnConveyor)
                 {
                     rg.isKinematic = true;
-                    rg.useGravity = true;
+                  
                 }
             }
         }
@@ -363,17 +389,13 @@ public class DraggingObs : MonoBehaviourPunCallbacks
                 {
                     rg.isKinematic = false;
 
-                    rg.useGravity = true;
+               
                 }
             }
         }
     }
 
-    [PunRPC]
-    void SetRigidBodyGravity(bool state)
-    {
-        myRigidbody.useGravity = state;
-    }
+   
    
     [PunRPC]
     void AddObjectToList(int _objectID)
@@ -419,7 +441,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     void MakeObjectNonKinematic()
     {
         myRigidbody.isKinematic = false;
-        myRigidbody.useGravity = true;
+      
     }
 
     [PunRPC]
@@ -428,20 +450,33 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         transform.parent = null;
     }
 
-    public void SetRPCGravity(bool _state)
-    {
-        if (_state)
-        {
-            pv.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, true);
-        }
-        else
-        {
-            pv.RPC("SetRigidBodyGravity", RpcTarget.AllBuffered, false);
-        }
-    }
   
     void OnCollisionEnter(Collision collision)
     {
+        
+        DraggingObs dr = collision.transform.root.GetComponent<DraggingObs>();
+
+        if(dr != null)
+        {
+            if (dr.onMouse)
+            {
+                float d = transform.position.y - collision.transform.position.y;
+                if (dr.transform == collision.transform && d > 0.4f)
+                {
+                    transform.parent = dr.transform;
+        
+                }
+
+                    
+                else if(collision.transform.root == dr.transform && d > 0.4f)
+                {
+                    transform.parent = collision.transform;
+                }
+            }
+
+         
+        }
+
         if(!contactObjects.Contains(collision.transform))
         {
             contactObjects.Add(collision.transform);
@@ -491,6 +526,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
       
     }
     
+    
    
     IEnumerator CheckParentOnCollision()
     {
@@ -515,11 +551,6 @@ public class DraggingObs : MonoBehaviourPunCallbacks
     private void OnCollisionExit(Collision collision)
     {
 
-        if (contactObjects.Contains(collision.transform))
-        {
-            contactObjects.Remove(collision.transform);
-        }
-        
 
         if( collision.transform == transform.parent )
         {
@@ -543,7 +574,7 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             if (LockedObjects.Contains(collision.transform))
             {
                 pv.RPC("RemoveObjetFromList", RpcTarget.AllBuffered, collision.transform.GetComponent<PhotonView>().ViewID);
-                SetRPCGravity(false);
+              
             }
         }
 
@@ -552,7 +583,12 @@ public class DraggingObs : MonoBehaviourPunCallbacks
             pv.RPC("MakeObjectNonKinematic", RpcTarget.AllBuffered);
                 
         }
-       
+
+
+        if (contactObjects.Contains(collision.transform))
+        {
+            contactObjects.Remove(collision.transform);
+        }
 
 
     }
