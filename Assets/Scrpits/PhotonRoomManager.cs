@@ -73,7 +73,7 @@ public class PhotonRoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
                     }
                 }
             }
-            else
+            else if(!rooms.Contains(ri))
             {
                 rooms.Add(ri);
                 GameObject go  = Instantiate(roomBuutonBrefab,roomsHolder);
