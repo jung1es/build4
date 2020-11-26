@@ -97,7 +97,19 @@ public class DraggingObs : MonoBehaviourPunCallbacks
 
     }
 
-   private int countThershold;
+    private float maxVelocity  = 30;
+
+    private void LateUpdate()
+    {
+        Vector3 vel = myRigidbody.velocity;
+        if(vel.magnitude > maxVelocity)
+        {
+            vel = vel.normalized * maxVelocity;
+            myRigidbody.velocity = vel;
+        }
+    }
+
+    private int countThershold;
 
 
 
