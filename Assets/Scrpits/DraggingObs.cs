@@ -522,10 +522,26 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         
     }
 
+    [SerializeField]
+    private int numberOfCollisionWithParent;
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.CompareTag("Staks"))
         {
+
+            if(transform.parent == collision.transform)
+            {
+                numberOfCollisionWithParent = collision.contacts.Length;
+
+                if(numberOfCollisionWithParent < 3)
+                {
+                    transform.parent = null;
+                    pv.RPC("MakeObjectKinematic", RpcTarget.AllBuffered);
+                }
+                
+            }
+
             if (transform.position.y + 0.4f < collision.transform.position.y)
             {
                 if (!LockedObjects.Contains(collision.transform))
