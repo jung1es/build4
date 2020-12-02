@@ -53,6 +53,12 @@ public class PhotonRoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
         OnCreatedRoomSuccesful.Invoke();
     }
 
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        Debug.Log("Joined To Room : " + PhotonNetwork.CurrentRoom.Name );
+    }
+
 
 
     private List<RoomInfo> rooms = new List<RoomInfo>();
@@ -86,6 +92,7 @@ public class PhotonRoomManager : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public void JoinRoom(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
+        
     }
 
 }

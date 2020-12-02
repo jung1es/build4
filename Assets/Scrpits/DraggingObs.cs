@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using ExitGames.Client.Photon;
 
-public class DraggingObs : MonoBehaviourPunCallbacks
+public class DraggingObs : MonoBehaviourPunCallbacks,IConvayable
 {
     public float rotSen = 100;
 
@@ -643,4 +643,8 @@ public class DraggingObs : MonoBehaviourPunCallbacks
         return isBelowEmpty;
     }
 
+    public void SetObjectOnConvey( bool isOn)
+    {
+       isOnConveyor = isOn;
+    }
 }

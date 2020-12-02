@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/POC_1Shared.unity
     guid: 00faa7f88a4c13947ade97e9a40d8ae2
+  - enabled: 1
+    path: Assets/Scenes/NOKenimatic.unity
+    guid: c4093290b7c530e42affc3f3011c2202
   m_configObjects: {}

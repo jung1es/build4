@@ -51,14 +51,31 @@ public class Conveyor : MonoBehaviour
     {
         if (collision.transform.CompareTag("Staks"))
         {
-            collision.transform.GetComponent<DraggingObs>().isOnConveyor = true;
+            collision.transform.GetComponent<IConvayable>().SetObjectOnConvey(true);
         }
     }
     private void OnCollisionExit(Collision collision)
     {
         if (collision.transform.CompareTag("Staks"))
         {
-            collision.transform.GetComponent<DraggingObs>().isOnConveyor = false;
+            collision.transform.GetComponent<IConvayable>().SetObjectOnConvey(false);
+        }
+    }
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.CompareTag("Staks"))
+        {
+            other.transform.GetComponent<IConvayable>().SetObjectOnConvey(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.CompareTag("Staks"))
+        {
+            other.transform.GetComponent<IConvayable>().SetObjectOnConvey(false);
         }
     }
 }
